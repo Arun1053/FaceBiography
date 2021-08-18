@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+
+  <div class = "container">
+
+    {% if error_statement %}
+
+    <div class="alert alert-warning alert-dismissal fade show" role="alert">
+      {{ error_statement }}
+    </div>
+    {% endif %}
+
+        <h1>Register here</h1>
+    <br/><br/>
+
+
+    <form action="/form" method="POST">
+  <div class="form-group" >
+    <input type="text" class="form-control" id="inputEmail4" placeholder="First Name" name="fst_name" value={{ first_name }}>
+  </div>
+
+  <div class="form-group">
+    <input type="text" class="form-control" id="inputEmail4" placeholder="Last Name" name="lst_name" value={{ last_name }}>
+  </div>
+
+  <div class="form-group">
+    <input type="email" class="form-control" id="inputEmail4" placeholder="Email Address" name="email_id" value={{ email }}>
+  </div>
+    <button type="submit" class="btn btn-secondary">Submit</button>
+  </div>
+
+    </form>
+
+
+
+
+  </div>
+
+{% endblock %}
