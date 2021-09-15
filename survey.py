@@ -39,9 +39,6 @@ def thanks():
         x.cv2.destroyAllWindows()
     return "Thanks for the participation please press q"
 
-def kill(self):
-    self.killed = True
-
 
 def deepface():
     embeddings = DeepFace.stream(db_path="/home/webwerks/NT/FaceBiography")
@@ -70,7 +67,10 @@ def faceanalysis():
         faces = faceCascade.detectMultiScale(gray, 1.1, 4)
 
         for (x, y, w, h) in faces:
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+
+
+
 
             font = cv2.FONT_HERSHEY_SIMPLEX
 

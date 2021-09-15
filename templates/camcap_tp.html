@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block title %}{{ title }}{% endblock %}
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<style>
+    /* Styling the Body element i.e. Color,
+		Font, Alignment of survey form */
+		body {
+			background-color: white;
+			font-family: Verdana;
+			text-align: center;
+		}
+
+		/* Styling the Form (Color, Padding, Shadow) */
+		form {
+			background-color: #fff;
+			max-width: 500px;
+			margin: 50px auto;
+			padding: 30px 20px;
+			box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
+		}
+
+		/* Styling form-control Class */
+		.form-control {
+			text-align: left;
+			margin-bottom: 25px;
+		}
+
+		/* Styling form-control Label */
+		.form-control label {
+			display: block;
+			margin-bottom: 10px;
+		}
+
+		/* Styling form-control input,
+		select, textarea */
+		.form-control input,
+		.form-control select,
+		.form-control textarea {
+			border: 1px solid #777;
+			border-radius: 2px;
+			font-family: inherit;
+			padding: 10px;
+			display: block;
+			width: 95%;
+		}
+
+		/* Styling form-control Radio
+		button and Checkbox */
+		.form-control input[type="radio"],
+		.form-control input[type="checkbox"] {
+			display: inline-block;
+			width: auto;
+		}
+
+		/* Styling Button */
+		button {
+			background-color: #05c46b;
+			border: 1px solid #777;
+			border-radius: 2px;
+			font-family: inherit;
+			font-size: 21px;
+			display: block;
+			width: 100%;
+			margin-top: 50px;
+			margin-bottom: 20px;
+		}
+</style>
+<body>
+
+<p><span id="errorMsg"></span></p>
+
+<!-- Stream video via webcam -->
+<div class="video-wrap">
+    <video id="video" playsinline autoplay></video>
+</div>
+
+<!-- Trigger canvas web API -->
+<div class="controller">
+    <button id="snap">Capture</button>
+</div>
+
+<!-- Webcam video snapshot -->
+<canvas id="canvas" width="640" height="480"></canvas>
+
+<script>
+'use strict';
+
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const snap = document.getElementById("snap");
+const errorMsgElement = document.querySelector('span#errorMsg');
+
+const constraints = {
+    audio: false,
+    video: {
+        width: 200, height: 200
+    }
+};
+
+// Access webcam
+async function init() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        handleSuccess(stream);
+    } catch (e) {
+        errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+    }
+}
+
+// Success
+function handleSuccess(stream) {
+    window.stream = stream;
+    video.srcObject = stream;
+}
+
+// Load init
+init();
+
+// Draw image
+var arr = [];
+function myFunction(){
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, 640, 480);
+    var imageData = context.getImageData(0,0,640,480);
+	// console.log(imageData.data);
+
+	var img = canvas.toDataURL("image/png");
+	console.log(img)
+	// arr.push(imageData.data);
+	arr.push(img)
+	return arr;
+}
+
+
+$(document).ready(function () {
+                $("#submit").on("click", function() {
+                    var js_data = myFunction();
+                    var arun = {};
+                    var form = $("form").serializeArray();
+
+                    $.each(form, function(i, v){
+                    	arun[v.name] = v.value})
+                    arun['images'] = JSON.stringify(js_data)
+                    console.log(arun)
+                    $.ajax({
+                        url: '/form',
+                        type : 'post',
+                        header : { 'Content-Type' : 'application/json' },
+                        dataType : 'json',
+                        data : arun
+                    }).done(function(result) {
+                        console.log(result);
+                        if (result.status){
+                        window.location.href = '/form'
+                        }
+
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        console.log("fail: ",textStatus, errorThrown);
+                    });
+                });
+			});
+
+setInterval(function(){
+    myFunction()
+}, 3000)
+
+</script>
+<h1>Survey Form</h1>
+
+	<!-- Create Form -->
+	<form method="POST">
+
+		<!-- Details -->
+
+		<div class="form-control">
+			<label>
+				Would you recommend neosoft to a friend?
+			</label>
+
+			<!-- Input Type Radio Button -->
+				<input type="radio"
+					name="recommed1"
+					value="0">Yes</input>
+
+
+				<input type="radio"
+					name="recommed1"
+					value="1">No</input>
+
+
+				<input type="radio"
+					name="recommed1"
+					value="2">Maybe</input>
+
+		</div>
+
+
+        <div class="form-control">
+			<label>
+				Is the salary credited on time?
+			</label>
+
+			<!-- Input Type Radio Button -->
+
+				<input type="radio"
+					name="recommed2"
+					value="0">Yes</input>
+
+
+				<input type="radio"
+					name="recommed2"
+					value="1">No</input>
+
+
+				<input type="radio"
+					name="recommed2"
+					value="2">Maybe</input>
+
+		</div>
+
+
+        <div class="form-control">
+			<label>
+				Is the working environment friendly?
+			</label>
+
+			<!-- Input Type Radio Button -->
+
+				<input type="radio"
+					name="recommed3"
+					value="0">Yes</input>
+
+
+				<input type="radio"
+					name="recommed3"
+					value="1">No</input>
+
+
+				<input type="radio"
+					name="recommed3"
+					value="2">Maybe</input>
+
+		</div>
+
+
+        <div class="form-control">
+			<label>
+				Do neosoft have extra engaging events?
+			</label>
+
+			<!-- Input Type Radio Button -->
+
+				<input type="radio"
+					name="recommed4"
+					value="0">Yes</input>
+
+
+				<input type="radio"
+					name="recommed4"
+					value="1">No</input>
+
+
+				<input type="radio"
+					name="recommed4"
+					value="2">Maybe</input>
+
+		</div>
+
+		<div class="form-control">
+			<label>
+				Do neosoft recognise its employees?
+			</label>
+
+			<!-- Input Type Radio Button -->
+
+				<input type="radio"
+					name="recommed5"
+					value="0">Yes</input>
+
+
+				<input type="radio"
+					name="recommed5"
+					value="1">No</input>
+
+
+				<input type="radio"
+					name="recommed5"
+					value="2">Maybe</input>
+
+		</div>
+
+
+
+
+		<div class="form-control">
+			<label for="comment">
+				Any comments or suggestions
+			</label>
+
+			<!-- multi-line text input control -->
+			<textarea name="comment" id="comment"
+				placeholder="Enter your comment here">
+			</textarea>
+		</div>
+
+		<!-- Multi-line Text Input Control -->
+		<div id="data"></div>
+		<button id="submit" type="button" class="btn btn-primary">Submit</button>
+	</form>
+
+</body>
+	</html>

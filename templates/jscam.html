@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+   <!DOCTYPE html>
+    <html>
+    <head>
+        <title> Webcam Trial </title>
+        <style>
+        /* Styling the Body element i.e. Color,
+		Font, Alignment of survey form */
+		body {
+			background-color: white;
+			font-family: Verdana;
+			text-align: center;
+		}
+
+		/* Styling the Form (Color, Padding, Shadow) */
+		form {
+			background-color: #fff;
+			max-width: 500px;
+			margin: 50px auto;
+			padding: 30px 20px;
+			box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
+		}
+
+		/* Styling form-control Class */
+		.form-control {
+			text-align: left;
+			margin-bottom: 25px;
+		}
+
+		/* Styling form-control Label */
+		.form-control label {
+			display: block;
+			margin-bottom: 10px;
+		}
+
+		/* Styling form-control input,
+		select, textarea */
+		.form-control input,
+		.form-control select,
+		.form-control textarea {
+			border: 1px solid #777;
+			border-radius: 2px;
+			font-family: inherit;
+			padding: 10px;
+			display: block;
+			width: 95%;
+		}
+
+		/* Styling form-control Radio
+		button and Checkbox */
+		.form-control input[type="radio"],
+		.form-control input[type="checkbox"] {
+			display: inline-block;
+			width: auto;
+		}
+
+		/* Styling Button */
+		button {
+			background-color: #05c46b;
+			border: 1px solid #777;
+			border-radius: 2px;
+			font-family: inherit;
+			font-size: 21px;
+			display: block;
+			width: 100%;
+			margin-top: 50px;
+			margin-bottom: 20px;
+		}
+
+		/* styling for webcam */
+  body {
+                margin: 0;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            .topnav {
+                overflow: hidden;
+                background-color: #333;
+            }
+
+            .topnav a {
+                float: left;
+                color: #f2f2f2;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+                font-size: 17px;
+            }
+
+            #container {
+                margin: 0px auto;
+                width: 200px;
+                height: 200px;
+                border: 10px #333 solid;
+            }
+            #videoElement {
+                width: 200px;
+                height: 200px;
+                background-color: #cc22cc;
+            }
+        </style>
+    </head>
+
+    <body>
+    <div class="topnav">
+        <a class="active" href="#home">Survey</a>
+
+    </div>
+
+    <div>
+        <h2>Survey</h2>
+    </div>
+    <div id="container">
+        <video autoplay="true" id="videoElement">
+
+        </video>
+    </div>
+    <script>
+    var video = document.querySelector("#videoElement");
+
+    if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({video: true})
+            .then(function(stream) {
+                video.srcObject = stream;
+            })
+            .catch(function(error) {
+                console.log("Something went wrong!");
+            });
+    }
+    const cnv = document.createElement('canvas'),
+        ctx = cnv.getContext('2d');
+
+	console.log(cnv, "trial")
+    ctx.drawImage(video,50,50);
+
+
+    let data = cnv.toDataUrl();
+    x=1000;
+    function every (x) {
+   let last = new Date().getTime();
+
+   (function loop () {
+     const now = new Date().getTime(),
+           delta = now - last;
+
+
+     if (delta >= x) {
+       //capture video
+       last = now;
+     }
+
+     window.requestAnimationFrame(loop);
+   })();
+ }
+
+
+    </script>
+    <h1>Survey Form</h1>
+
+	<!-- Create Form -->
+	<form id="form">
+
+		<!-- Details -->
+
+		<div class="form-control">
+			<label>
+				Would you recommend neosoft to a friend?
+			</label>
+
+			<!-- Input Type Radio Button -->
+				<input type="radio"
+					id="recommed-1"
+					name="recommed1">Yes</input>
+
+
+				<input type="radio"
+					id="recommed-1"
+					name="recommed1">No</input>
+
+
+				<input type="radio"
+					id="recommed-1"
+					name="recommed1">Maybe</input>
+
+		</div>
+
+
+        <div class="form-control">
+			<label>
+				Is the salary credited on time?
+			</label>
+
+			<!-- Input Type Radio Button -->
+			<label for="recommed-2">
+				<input type="radio"
+					id="recommed-2"
+					name="recommed2">Yes</input>
+			</label>
+			<label for="recommed-2">
+				<input type="radio"
+					id="recommed-2"
+					name="recommed2">No</input>
+			</label>
+			<label for="recommed-2">
+				<input type="radio"
+					id="recommed-2"
+					name="recommed2">Maybe</input>
+			</label>
+		</div>
+
+
+        <div class="form-control">
+			<label>
+				Is the working environment friendly?
+			</label>
+
+			<!-- Input Type Radio Button -->
+			<label for="recommed-3">
+				<input type="radio"
+					id="recommed-3"
+					name="recommed3">Yes</input>
+			</label>
+			<label for="recommed-3">
+				<input type="radio"
+					id="recommed-3"
+					name="recommed3">No</input>
+			</label>
+			<label for="recommed-3">
+				<input type="radio"
+					id="recommed-3"
+					name="recommed3">Maybe</input>
+			</label>
+		</div>
+
+
+        <div class="form-control">
+			<label>
+				Do neosoft have extra engaging events?
+			</label>
+
+			<!-- Input Type Radio Button -->
+			<label for="recommed-4">
+				<input type="radio"
+					id="recommed-4"
+					name="recommed4">Yes</input>
+			</label>
+			<label for="recommed-4">
+				<input type="radio"
+					id="recommed-4"
+					name="recommed4">No</input>
+			</label>
+			<label for="recommed-4">
+				<input type="radio"
+					id="recommed-4"
+					name="recommed4">Maybe</input>
+			</label>
+		</div>
+
+		<div class="form-control">
+			<label>
+				Do neosoft recognise its employees?
+			</label>
+
+			<!-- Input Type Radio Button -->
+			<label for="recommed-5">
+				<input type="radio"
+					id="recommed-5"
+					name="recommed5">Yes</input>
+			</label>
+			<label for="recommed-5">
+				<input type="radio"
+					id="recommed-5"
+					name="recommed5">No</input>
+			</label>
+			<label for="recommed-5">
+				<input type="radio"
+					id="recommed-5"
+					name="recommed5">Maybe</input>
+			</label>
+		</div>
+
+
+
+
+		<div class="form-control">
+			<label for="comment">
+				Any comments or suggestions
+			</label>
+
+			<!-- multi-line text input control -->
+			<textarea name="comment" id="comment"
+				placeholder="Enter your comment here">
+			</textarea>
+		</div>
+
+		<!-- Multi-line Text Input Control -->
+		<button type="submit" value="submit">
+			Submit
+		</button>
+	</form>
+    </body>
+    </html>
